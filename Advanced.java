@@ -62,7 +62,6 @@ public class Advanced {
 }
 final class formatModel{
     private char open,close;
-    public static int count =0;
     public formatModel() {
     }
 
@@ -72,18 +71,13 @@ final class formatModel{
     }
 
     public char getOpen() {
-        count++;
         return open;
-    }
-    public int getCount(){
-        return count;
     }
     public void setOpen(char open) {
         this.open = open;
     }
 
     public char getClose() {
-        count++;
         return close;
     }
 
