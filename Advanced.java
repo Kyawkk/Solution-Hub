@@ -4,9 +4,10 @@ import java.util.Scanner;
 public class Advanced {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
+        int openPosition=0, closePosition = 0;
+        int timesOfOpen = 0, timesOfClose = 0;
         System.out.print("Enter a string: ");
-        String inputString = input.next();
-        int oneOrMore = 0;
+        String inputString = input.nextLine();
         char[] regArr = {'[','{','(',')','}',']'};
         ArrayList<formatModel> formatList = new ArrayList<>();
         formatList.add(new formatModel('[',']'));
@@ -23,38 +24,74 @@ public class Advanced {
             }
         }
 
-        if (inputString.length()==1){
+        if (inputString.trim().length()==1){
+            answersList.add("YES");
+        }
+
+        else if (charOfInput.size()==0){
             answersList.add("YES");
         }
 
         else {
             for (int i=0; i<formatList.size(); i++){
                 if (charOfInput.contains(formatList.get(i).getOpen())){
-                    for (int j=0; j<charOfInput.size(); j++){
-                        if (charOfInput.get(i).equals(charOfInput.get(j))){
-                            oneOrMore++;
+                    if (charOfInput.contains(formatList.get(i).getOpen()) && charOfInput.contains(formatList.get(i).getClose())){
+
+                        //check times of open and close
+                        
+                        for (int j=0; j<charOfInput.size(); j++){
+                            for (int k=0; k<formatList.size(); k++){
+                                if (charOfInput.get(j)==formatList.get(k).getOpen()){
+                                    timesOfOpen++;
+                                }
+                                else if (charOfInput.get(j)==formatList.get(k).getClose()){
+                                    timesOfClose++;
+                                }
+                            }
+                        }
+                        if (timesOfClose==timesOfOpen){
+                            answersList.add("YES");
+                        }
+                        else {
+                            answersList.add("NO");
+                        }
+                        for (int j = 0; j < charOfInput.size(); j++) {
+                            for (int k = 0; k < formatList.size(); k++) {
+                                if (charOfInput.get(j) == formatList.get(k).getOpen()) {
+                                    openPosition = j;
+                                    if (charOfInput.contains(formatList.get(k).getClose())) {
+                                        answersList.add("YES");
+                                    }
+                                    else {
+                                        answersList.add("NO");
+                                    }
+
+                                    for (int l = 0; l < charOfInput.size(); l++) {
+                                        if (formatList.get(k).getClose() == charOfInput.get(l)) {
+                                            closePosition = l;
+                                        }
+                                    }
+
+                                    if (closePosition > openPosition) {
+                                        answersList.add("YES");
+                                    }
+                                    else {
+                                        answersList.add("NO");
+                                    }
+                                }
+                            }
                         }
                     }
-                    if (oneOrMore>1){
-                        answersList.add("NO");
-                    }
-                    oneOrMore = 0;
-                    if (charOfInput.contains(formatList.get(i).getOpen()) && charOfInput.contains(formatList.get(i).getClose())){
-                        answersList.add("YES");
-                    }
-                    else {
-                        answersList.add("NO");
-                    }
-                }
-                else {
-
                 }
             }
         }
         if (answersList.contains("NO")){
             System.out.println("NO");
         }
-        else {
+        else if (answersList.size()==0){
+            System.out.println("NO");
+        }
+        else{
             System.out.println("YES");
         }
     }
